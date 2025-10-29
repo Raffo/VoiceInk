@@ -22,14 +22,8 @@ final class AnnouncementsService {
     // MARK: - Public API
 
     func start() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
-            self?.fetchAndMaybeShow()
-        }
-        // Do an initial fetch shortly after launch
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
-            self?.fetchAndMaybeShow()
-        }
+        // Network activity disabled - no announcements fetched
+        return
     }
 
     func stop() {
