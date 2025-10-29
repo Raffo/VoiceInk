@@ -11,13 +11,9 @@ struct LicenseManagementView: View {
                 // Hero Section
                 heroSection
                 
-                // Main Content
+                // Main Content - Always show activated content since license checking is disabled
                 VStack(spacing: 32) {
-                    if case .licensed = licenseViewModel.licenseState {
-                        activatedContent
-                    } else {
-                        purchaseContent
-                    }
+                    activatedContent
                 }
                 .padding(32)
             }
@@ -38,7 +34,7 @@ struct LicenseManagementView: View {
                         .foregroundStyle(.blue)
                     
                     HStack(alignment: .lastTextBaseline, spacing: 8) { 
-                        Text(licenseViewModel.licenseState == .licensed ? "VoiceInk Pro" : "Upgrade to Pro")
+                        Text("VoiceInk Pro")
                             .font(.system(size: 32, weight: .bold))
                         
                         Text("v\(appVersion)")
@@ -48,30 +44,28 @@ struct LicenseManagementView: View {
                     }
                 }
                 
-                Text(licenseViewModel.licenseState == .licensed ?
-                     "Thank you for supporting VoiceInk" :
-                     "Transcribe what you say to text instantly with AI")
+                Text("Thank you for supporting VoiceInk")
                     .font(.title3)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
 
-                if case .licensed = licenseViewModel.licenseState {
-                    HStack(spacing: 40) {
-                        Button {
-                            if let url = URL(string: "https://github.com/Beingpax/VoiceInk/releases") {
-                                NSWorkspace.shared.open(url)
-                            }
-                        } label: {
-                            featureItem(icon: "list.bullet.clipboard.fill", title: "Changelog", color: .blue)
+                // Always show licensed features since license checking is disabled
+                HStack(spacing: 40) {
+                    Button {
+                        if let url = URL(string: "https://github.com/Beingpax/VoiceInk/releases") {
+                            NSWorkspace.shared.open(url)
                         }
-                        .buttonStyle(.plain)
-                        
-                        Button {
-                            if let url = URL(string: "https://discord.gg/xryDy57nYD") {
-                                NSWorkspace.shared.open(url)
-                            }
-                        } label: {
-                            featureItem(icon: "bubble.left.and.bubble.right.fill", title: "Discord", color: .purple)
+                    } label: {
+                        featureItem(icon: "list.bullet.clipboard.fill", title: "Changelog", color: .blue)
+                    }
+                    .buttonStyle(.plain)
+                    
+                    Button {
+                        if let url = URL(string: "https://discord.gg/xryDy57nYD") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    } label: {
+                        featureItem(icon: "bubble.left.and.bubble.right.fill", title: "Discord", color: .purple)
                         }
                         .buttonStyle(.plain)
                         
@@ -101,7 +95,6 @@ struct LicenseManagementView: View {
                         .buttonStyle(.plain)
                     }
                     .padding(.top, 8)
-                }
             }
         }
         .padding(.vertical, 60)
@@ -185,32 +178,6 @@ struct LicenseManagementView: View {
             .padding(32)
             .background(CardBackground(isSelected: false))
             .shadow(color: .black.opacity(0.05), radius: 10)
-            
-            // Already Purchased Section
-            VStack(spacing: 20) {
-                Text("Already purchased?")
-                    .font(.headline)
-
-                HStack(spacing: 12) {
-                    Text("Manage your license and device activations")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-
-                    Button(action: {
-                        if let url = URL(string: "https://polar.sh/beingpax/portal/request") {
-                            NSWorkspace.shared.open(url)
-                        }
-                    }) {
-                        Text("License Management Portal")
-                            .frame(width: 180)
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
-            }
-            .padding(32)
-            .background(CardBackground(isSelected: false))
-            .shadow(color: .black.opacity(0.05), radius: 10)
         }
     }
     
@@ -235,15 +202,9 @@ struct LicenseManagementView: View {
                 
                 Divider()
                 
-                if licenseViewModel.activationsLimit > 0 {
-                    Text("This license can be activated on up to \(licenseViewModel.activationsLimit) devices")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                } else {
-                    Text("You can use VoiceInk Pro on all your personal devices")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
+                Text("You can use VoiceInk Pro on all your devices - license validation disabled")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
             .padding(32)
             .background(CardBackground(isSelected: false))
